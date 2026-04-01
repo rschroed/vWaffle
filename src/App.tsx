@@ -1,12 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Hero } from './components/Hero'
-import { WaffleComposer } from './components/WaffleComposer'
-import { WaffleFeed } from './components/WaffleFeed'
 import { type SendWaffleInput, type Waffle } from './domain/waffles'
+import { HomePage } from './features/home/HomePage'
 import { createMockWaffleRepository, type WaffleRepository } from './lib/waffleRepository'
 
 const DEFAULT_TAGLINE =
-  import.meta.env.VITE_APP_TAGLINE ?? 'Send syrupy kudos across the team.'
+  import.meta.env.VITE_APP_TAGLINE ??
+  'Lightweight recognition for small internal teams.'
 
 const DEFAULT_FIGMA_FILE_URL =
   import.meta.env.VITE_FIGMA_FILE_URL ||
@@ -40,20 +39,12 @@ export default function App({ repository }: AppProps) {
   }
 
   return (
-    <main className="app-shell">
-      <div className="background-orb orb-left" />
-      <div className="background-orb orb-right" />
-
-      <Hero
-        figmaFileUrl={DEFAULT_FIGMA_FILE_URL}
-        sentCount={waffles.length}
-        tagline={DEFAULT_TAGLINE}
-      />
-
-      <section className="content-grid">
-        <WaffleComposer onSend={handleSend} />
-        <WaffleFeed waffles={waffles} />
-      </section>
-    </main>
+    <HomePage
+      figmaFileUrl={DEFAULT_FIGMA_FILE_URL}
+      onSend={handleSend}
+      sentCount={waffles.length}
+      tagline={DEFAULT_TAGLINE}
+      waffles={waffles}
+    />
   )
 }
