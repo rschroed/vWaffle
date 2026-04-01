@@ -6,10 +6,14 @@ import { SectionHeader } from '../../ui/SectionHeader'
 import { Stack } from '../../ui/Stack'
 
 type WaffleFeedSectionProps = {
+  isLoading: boolean
   waffles: Waffle[]
 }
 
-export function WaffleFeedSection({ waffles }: WaffleFeedSectionProps) {
+export function WaffleFeedSection({
+  isLoading,
+  waffles,
+}: WaffleFeedSectionProps) {
   return (
     <section>
       <Panel as="section" className="feature-panel">
@@ -20,34 +24,44 @@ export function WaffleFeedSection({ waffles }: WaffleFeedSectionProps) {
             description="A lightweight stream of appreciation across the team, visible to everyone."
           />
 
-          <div className="feed-list" role="list">
-            {waffles.map((waffle) => (
-              <Panel
-                as="article"
-                className="feed-card"
-                key={waffle.id}
-                role="listitem"
-                tone="subtle"
-              >
-                <div className="feed-card-top">
-                  <Badge>{waffle.flavor}</Badge>
-                  <time className="feed-card-time" dateTime={waffle.createdAt}>
-                    {formatFriendlyTimestamp(waffle.createdAt)}
-                  </time>
-                </div>
-                <Stack gap="sm">
-                  <h3 className="feed-card-title">
-                    {waffle.sender.name}
-                    {' '}
-                    sent a waffle to
-                    {' '}
-                    {waffle.recipient.name}
-                  </h3>
-                  <p className="feed-card-message">{waffle.message}</p>
-                </Stack>
-              </Panel>
-            ))}
-          </div>
+          {isLoading ? (
+            <Panel className="feed-state" tone="subtle">
+              Loading the shared feed...
+            </Panel>
+          ) : waffles.length === 0 ? (
+            <Panel className="feed-state" tone="subtle">
+              No waffles yet. Send the first one to start the feed.
+            </Panel>
+          ) : (
+            <div className="feed-list" role="list">
+              {waffles.map((waffle) => (
+                <Panel
+                  as="article"
+                  className="feed-card"
+                  key={waffle.id}
+                  role="listitem"
+                  tone="subtle"
+                >
+                  <div className="feed-card-top">
+                    <Badge>{waffle.flavor}</Badge>
+                    <time className="feed-card-time" dateTime={waffle.createdAt}>
+                      {formatFriendlyTimestamp(waffle.createdAt)}
+                    </time>
+                  </div>
+                  <Stack gap="sm">
+                    <h3 className="feed-card-title">
+                      {waffle.sender.name}
+                      {' '}
+                      sent a waffle to
+                      {' '}
+                      {waffle.recipient.name}
+                    </h3>
+                    <p className="feed-card-message">{waffle.message}</p>
+                  </Stack>
+                </Panel>
+              ))}
+            </div>
+          )}
         </Stack>
       </Panel>
     </section>

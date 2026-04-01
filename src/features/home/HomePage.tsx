@@ -4,7 +4,9 @@ import { WaffleComposerSection } from './WaffleComposerSection'
 import { WaffleFeedSection } from './WaffleFeedSection'
 
 type HomePageProps = {
+  errorMessage: string | null
   figmaFileUrl?: string
+  isLoading: boolean
   onSend: (input: SendWaffleInput) => Promise<void>
   sentCount: number
   tagline: string
@@ -12,7 +14,9 @@ type HomePageProps = {
 }
 
 export function HomePage({
+  errorMessage,
   figmaFileUrl,
+  isLoading,
   onSend,
   sentCount,
   tagline,
@@ -26,9 +30,16 @@ export function HomePage({
         tagline={tagline}
       />
 
+      {errorMessage ? (
+        <section className="status-banner" role="alert">
+          <p className="status-banner-title">Shared feed unavailable</p>
+          <p className="status-banner-copy">{errorMessage}</p>
+        </section>
+      ) : null}
+
       <section className="home-grid">
         <WaffleComposerSection onSend={onSend} />
-        <WaffleFeedSection waffles={waffles} />
+        <WaffleFeedSection isLoading={isLoading} waffles={waffles} />
       </section>
     </main>
   )

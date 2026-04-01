@@ -5,7 +5,8 @@ vWaffle is a playful lunch-and-learn demo app for showing how Codex can help sca
 ## Stack
 
 - Vite + React + TypeScript
-- In-memory `waffleRepository` seam for future backend swaps
+- `waffleRepository` seam with mock and hosted adapters
+- Vercel Function + Postgres-backed shared feed for deployed environments
 - Vitest + Testing Library
 - Vercel-ready static deployment
 
@@ -37,10 +38,12 @@ Figma source:
 ## Project shape
 
 - `src/domain/waffles.ts`: domain contract and seeded waffles
-- `src/lib/waffleRepository.ts`: repository interface plus mock implementation
-- `src/components/*`: hero, composer, and feed UI
+- `src/lib/waffleRepository.ts`: repository interface plus mock/API-backed implementations
+- `src/features/home/*`: page sections for hero, composer, and feed
+- `src/ui/*`: reusable design-system-ready primitives
 - `docs/demo-runbook.md`: happy-path walkthrough for the lunch-and-learn
 - `docs/product-vision.md`: narrative product vision for `vvaffle`
+- `api/waffles.ts`: Vercel Function for the shared persisted feed
 
 ## Figma and environment setup
 
@@ -51,6 +54,31 @@ cp .env.example .env.local
 ```
 
 The included `.env.example` already points to the starter Figma file. Override `VITE_FIGMA_FILE_URL` if you want the hero button to point somewhere else.
+
+## Shared persistence
+
+The app now supports a real shared feed through a small Vercel Function backed by Postgres.
+
+- Local development defaults to the mock repository so `npm run dev` still works without backend setup.
+- Deployed environments default to the hosted API repository.
+- To force a mode locally:
+  - `VITE_WAFFLE_REPOSITORY=mock`
+  - `VITE_WAFFLE_REPOSITORY=api`
+
+### Database setup
+
+Set `DATABASE_URL` in Vercel to any lightweight Postgres instance you want to use for the shared feed. A managed Vercel Marketplace Postgres provider such as Neon is a good fit.
+
+The API function creates the single `waffles` table automatically on first request using this flat shape:
+
+- `id`
+- `sender_name`
+- `recipient_name`
+- `flavor`
+- `message`
+- `created_at`
+
+For local API testing against a real database, provide `DATABASE_URL` and either run through Vercel dev tooling or point `VITE_WAFFLE_API_BASE_URL` at a deployed environment.
 
 ## Vercel
 

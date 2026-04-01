@@ -45,9 +45,14 @@ export function WaffleComposerSection({
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setStatus('sending')
-    await onSend(form)
-    setForm(INITIAL_FORM)
-    setStatus('sent')
+
+    try {
+      await onSend(form)
+      setForm(INITIAL_FORM)
+      setStatus('sent')
+    } catch {
+      setStatus('idle')
+    }
   }
 
   return (
