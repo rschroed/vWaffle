@@ -40,6 +40,7 @@ Figma source:
 - `src/lib/waffleRepository.ts`: repository interface plus mock implementation
 - `src/components/*`: hero, composer, and feed UI
 - `docs/demo-runbook.md`: happy-path walkthrough for the lunch-and-learn
+- `docs/product-vision.md`: narrative product vision for `vvaffle`
 
 ## Figma and environment setup
 
