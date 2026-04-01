@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto'
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { WAFFLE_FLAVORS, type SendWaffleInput } from '../src/domain/waffles'
+import type { SendWaffleInput } from '../src/domain/waffles'
 import {
   ensureWafflesTable,
   getPool,
@@ -8,6 +8,16 @@ import {
   mapWaffleRowToDomain,
   type WaffleRow,
 } from './_lib/wafflesDb'
+
+// Keep runtime validation local to the API function so the server bundle does
+// not depend on client-side source files being present at execution time.
+const WAFFLE_FLAVORS = [
+  'Classic Buttermilk',
+  'Blueberry Blitz',
+  'Chocolate Confetti',
+  'Matcha Mingle',
+  'Savory Cheddar',
+] as const
 
 const isValidInput = (input: Partial<SendWaffleInput>): input is SendWaffleInput =>
   typeof input.senderName === 'string' &&
