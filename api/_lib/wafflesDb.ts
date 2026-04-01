@@ -1,6 +1,6 @@
 import { attachDatabasePool } from '@vercel/functions'
 import { Pool } from 'pg'
-import { type Waffle } from '../../src/domain/waffles'
+import { type Waffle } from '../../src/domain/waffles.js'
 
 export type WaffleRow = {
   id: string
