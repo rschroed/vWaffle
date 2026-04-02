@@ -18,10 +18,10 @@
 .ui-badge {
   display: inline-flex;
   align-items: center;
-  min-height: 1.75rem;
+  min-height: var(--size-badge-height);
   width: fit-content;
   border: 1px solid var(--color-border);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   padding: 0.25rem 0.625rem;
   background: var(--color-surface);
   color: var(--color-text-muted);
@@ -39,7 +39,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 2.75rem;
+  min-height: var(--size-button-height);
   border: 1px solid var(--color-border-strong);
   border-radius: var(--radius-md);
   padding: 0.625rem 1rem;
@@ -59,6 +59,11 @@
 .ui-button:disabled {
   cursor: not-allowed;
   opacity: 0.55;
+}
+
+.ui-button:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 1px;
 }
 
 .ui-field {
@@ -99,7 +104,18 @@
 }
 
 .ui-section-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+
+.ui-section-copy {
   max-width: 38rem;
+}
+
+.ui-section-actions {
+  flex-shrink: 0;
 }
 
 .ui-section-title {
@@ -114,4 +130,52 @@
   color: var(--color-text-muted);
   font-size: var(--text-md);
   line-height: 1.6;
+}
+
+.ui-sheet {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .ui-sheet {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-overlay);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: var(--space-sm);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity var(--motion-fast) ease,
+      visibility var(--motion-fast) ease;
+  }
+
+  .ui-sheet--open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .ui-sheet-backdrop {
+    position: absolute;
+    inset: 0;
+    border: 0;
+    background: var(--overlay-scrim);
+  }
+
+  .ui-sheet-dialog {
+    position: relative;
+    width: min(100%, var(--size-overlay-max-width));
+    max-height: calc(100vh - var(--space-sm));
+    overflow: auto;
+    transform: translateY(var(--size-overlay-slide-offset));
+    transition: transform var(--motion-fast) ease;
+  }
+
+  .ui-sheet--open .ui-sheet-dialog {
+    transform: translateY(0);
+  }
 }

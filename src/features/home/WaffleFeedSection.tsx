@@ -1,17 +1,20 @@
 import { type Waffle } from '../../domain/waffles'
 import { formatFriendlyTimestamp } from '../../lib/time'
 import { Badge } from '../../ui/Badge'
+import { Button } from '../../ui/Button'
 import { Panel } from '../../ui/Panel'
 import { SectionHeader } from '../../ui/SectionHeader'
 import { Stack } from '../../ui/Stack'
 
 type WaffleFeedSectionProps = {
   isLoading: boolean
+  onOpenComposer: () => void
   waffles: Waffle[]
 }
 
 export function WaffleFeedSection({
   isLoading,
+  onOpenComposer,
   waffles,
 }: WaffleFeedSectionProps) {
   return (
@@ -19,8 +22,12 @@ export function WaffleFeedSection({
       <Panel as="section" className="feature-panel">
         <Stack gap="lg">
           <SectionHeader
-            eyebrow="Shared feed"
-            title="Team recognition"
+            actions={
+              <Button className="feed-mobile-trigger" onClick={onOpenComposer}>
+                New waffle
+              </Button>
+            }
+            title="VVAFFLE FEED"
             description="A lightweight stream of appreciation across the team, visible to everyone."
           />
 

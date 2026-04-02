@@ -1,4 +1,3 @@
-import { Badge } from '../../ui/Badge'
 import { Button } from '../../ui/Button'
 import { Panel } from '../../ui/Panel'
 import { Stack } from '../../ui/Stack'
@@ -6,35 +5,26 @@ import { Stack } from '../../ui/Stack'
 type HeroSectionProps = {
   tagline: string
   figmaFileUrl?: string
-  sentCount: number
+  onOpenComposer: () => void
 }
 
 export function HeroSection({
   tagline,
   figmaFileUrl,
-  sentCount,
+  onOpenComposer,
 }: HeroSectionProps) {
   return (
     <section className="hero-section">
       <Panel as="section" className="hero-panel">
         <Stack gap="lg">
-          <div className="hero-badges">
-            <Badge>Peer recognition</Badge>
-            <Badge tone="muted">{sentCount} waffles shared</Badge>
+          <div className="hero-logo" aria-label="vvaffle placeholder logo">
+            vv
           </div>
 
-          <Stack gap="md">
-            <h1 className="hero-title">Recognition that stays visible.</h1>
-            <p className="hero-copy">
-              {tagline}
-              {' '}
-              vvaffle helps small teams celebrate everyday contributions in one
-              shared place, so appreciation is easy to give and easy to see.
-            </p>
-          </Stack>
+          <p className="hero-tagline">{tagline}</p>
 
           <div className="hero-actions">
-            <Button href="#composer" variant="primary">
+            <Button className="hero-mobile-trigger" onClick={onOpenComposer} variant="primary">
               Send a waffle
             </Button>
             {figmaFileUrl ? (

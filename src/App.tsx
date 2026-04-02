@@ -73,7 +73,6 @@ export default function App({ repository }: AppProps) {
       figmaFileUrl={DEFAULT_FIGMA_FILE_URL}
       isLoading={isLoading}
       onSend={handleSend}
-      sentCount={waffles.length}
       tagline={DEFAULT_TAGLINE}
       waffles={waffles}
     />

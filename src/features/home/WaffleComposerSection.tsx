@@ -10,6 +10,7 @@ import { Stack } from '../../ui/Stack'
 import { Textarea } from '../../ui/Textarea'
 
 type WaffleComposerSectionProps = {
+  onDismiss?: () => void
   onSend: (input: SendWaffleInput) => Promise<void>
 }
 
@@ -21,6 +22,7 @@ const INITIAL_FORM: SendWaffleInput = {
 }
 
 export function WaffleComposerSection({
+  onDismiss,
   onSend,
 }: WaffleComposerSectionProps) {
   const [form, setForm] = useState(INITIAL_FORM)
@@ -60,7 +62,17 @@ export function WaffleComposerSection({
       <Panel as="section" className="feature-panel">
         <Stack gap="lg">
           <SectionHeader
-            eyebrow="Compose"
+            actions={
+              onDismiss ? (
+                <Button
+                  aria-label="Close composer"
+                  className="composer-dismiss"
+                  onClick={onDismiss}
+                >
+                  Close
+                </Button>
+              ) : null
+            }
             title="Send a waffle"
             description="Share a short note of appreciation with a teammate and add a little personality with a flavor."
           />
