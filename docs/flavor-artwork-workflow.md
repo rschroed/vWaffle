@@ -22,8 +22,8 @@ Current supported frames:
 - `Chocolate Confetti`
 - `Matcha Mingle`
 - `Savory Cheddar`
-
-Extra exploratory frames in Figma are allowed, but they are ignored until the flavor is added to `WAFFLE_FLAVORS`.
+- `Wedding Cake Waffles`
+- `Put an Egg On It`
 
 ## Export Convention
 
@@ -44,6 +44,8 @@ Examples:
 - `Chocolate Confetti` -> `public/waffles/chocolate-confetti.png`
 - `Matcha Mingle` -> `public/waffles/matcha-mingle.png`
 - `Savory Cheddar` -> `public/waffles/savory-cheddar.png`
+- `Wedding Cake Waffles` -> `public/waffles/wedding-cake-waffles.png`
+- `Put an Egg On It` -> `public/waffles/put-an-egg-on-it.png`
 
 The app uses the same normalization in `src/features/home/waffleFlavorArtwork.ts`.
 

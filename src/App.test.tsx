@@ -135,7 +135,7 @@ describe('App', () => {
     await user.type(screen.getByLabelText(/To/i), 'Sam')
     await user.selectOptions(
       screen.getByLabelText(/Flavor/i),
-      WAFFLE_FLAVORS[2]
+      'Put an Egg On It'
     )
     await user.type(
       screen.getByLabelText(/Why this waffle\?/i),
@@ -153,11 +153,11 @@ describe('App', () => {
     expect(card).toHaveAttribute('data-arcade-arrival', 'active')
     expect(
       within(card as HTMLElement).getByRole('img', {
-        name: /Chocolate Confetti waffle artwork/i,
+        name: /Put an Egg On It waffle artwork/i,
       })
     ).toHaveAttribute(
       'src',
-      getWaffleFlavorArtwork('Chocolate Confetti').src
+      getWaffleFlavorArtwork('Put an Egg On It').src
     )
     expect(
       within(card as HTMLElement).getByText(

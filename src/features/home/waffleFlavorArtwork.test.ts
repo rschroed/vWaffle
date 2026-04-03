@@ -14,6 +14,8 @@ describe('waffleFlavorArtwork', () => {
     expect(slugifyWaffleFlavor('Chocolate Confetti')).toBe('chocolate-confetti')
     expect(slugifyWaffleFlavor('Matcha Mingle')).toBe('matcha-mingle')
     expect(slugifyWaffleFlavor('Savory Cheddar')).toBe('savory-cheddar')
+    expect(slugifyWaffleFlavor('Wedding Cake Waffles')).toBe('wedding-cake-waffles')
+    expect(slugifyWaffleFlavor('Put an Egg On It')).toBe('put-an-egg-on-it')
   })
 
   it('maps every supported flavor to a committed artwork file', () => {

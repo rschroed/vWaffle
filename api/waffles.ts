@@ -18,6 +18,8 @@ const WAFFLE_FLAVORS = [
   'Chocolate Confetti',
   'Matcha Mingle',
   'Savory Cheddar',
+  'Wedding Cake Waffles',
+  'Put an Egg On It',
 ] as const
 
 const isValidInput = (input: Partial<SendWaffleInput>): input is SendWaffleInput =>
