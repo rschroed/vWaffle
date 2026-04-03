@@ -13,6 +13,14 @@ describe('createMockWaffleRepository', () => {
     expect(waffles).toHaveLength(SEEDED_WAFFLES.length)
     expect(waffles[0].createdAt >= waffles[1].createdAt).toBe(true)
   })
+
+  it('increments the celebration count for a waffle', async () => {
+    const repository = createMockWaffleRepository()
+
+    const updatedWaffle = await repository.celebrateWaffle('waffle-003')
+
+    expect(updatedWaffle.celebrationCount).toBe(1)
+  })
 })
 
 describe('createApiWaffleRepository', () => {
@@ -52,6 +60,7 @@ describe('createApiWaffleRepository', () => {
             flavor: WAFFLE_FLAVORS[0],
             message: 'Thanks for helping unblock the launch.',
             createdAt,
+            celebrationCount: 0,
           },
         }),
         {
@@ -81,5 +90,39 @@ describe('createApiWaffleRepository', () => {
     )
     expect(waffle.createdAt).toBe(createdAt)
     expect(waffle.sender.name).toBe('Avery')
+  })
+
+  it('posts celebrate requests and returns the updated waffle', async () => {
+    const fetchImpl = vi.fn(async () =>
+      new Response(
+        JSON.stringify({
+          waffle: {
+            ...SEEDED_WAFFLES[0],
+            celebrationCount: 3,
+          },
+        }),
+        {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
+    )
+
+    const repository = createApiWaffleRepository({
+      baseUrl: 'https://example.com',
+      fetchImpl,
+      getBrowserToken: () => 'browser-123',
+    })
+
+    const waffle = await repository.celebrateWaffle('waffle-001')
+
+    expect(fetchImpl).toHaveBeenCalledWith(
+      'https://example.com/api/waffles/waffle-001/celebrate',
+      expect.objectContaining({
+        method: 'POST',
+        body: JSON.stringify({ browserToken: 'browser-123' }),
+      })
+    )
+    expect(waffle.celebrationCount).toBe(3)
   })
 })

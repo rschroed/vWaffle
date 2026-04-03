@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { vi } from 'vitest'
 import App from './App'
@@ -24,6 +24,7 @@ const mockMatchMedia = (matches: boolean) => {
 
 describe('App', () => {
   afterEach(() => {
+    window.localStorage.clear()
     vi.restoreAllMocks()
   })
 
@@ -34,6 +35,40 @@ describe('App', () => {
     expect(
       screen.getByText(SEEDED_WAFFLES[1].message)
     ).toBeInTheDocument()
+    expect(screen.getByText('2 cheers')).toBeInTheDocument()
+  })
+
+  it('lets the viewer celebrate a waffle once', async () => {
+    const user = userEvent.setup()
+
+    render(<App repository={createMockWaffleRepository()} />)
+
+    const cardTitle = await screen.findByText(/Alex sent a waffle to Taylor/i)
+    const card = cardTitle.closest('article')
+
+    expect(card).not.toBeNull()
+
+    await user.click(within(card as HTMLElement).getByRole('button', { name: /Celebrate/i }))
+
+    expect(within(card as HTMLElement).getByRole('button', { name: /Celebrated/i })).toBeDisabled()
+    expect(within(card as HTMLElement).getByText('1 cheer')).toBeInTheDocument()
+  })
+
+  it('renders previously celebrated waffles as completed for this browser', async () => {
+    window.localStorage.setItem(
+      'vvaffle:celebrated-waffle-ids',
+      JSON.stringify(['waffle-001'])
+    )
+
+    render(<App repository={createMockWaffleRepository()} />)
+
+    const cardTitle = await screen.findByText(/Ryan sent a waffle to Priya/i)
+    const card = cardTitle.closest('article')
+
+    expect(card).not.toBeNull()
+    expect(
+      within(card as HTMLElement).getByRole('button', { name: /Celebrated/i })
+    ).toBeDisabled()
   })
 
   it('lets the user send a new waffle into the feed', async () => {

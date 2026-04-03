@@ -5,6 +5,7 @@ import {
   m,
   useReducedMotion,
 } from 'motion/react'
+import { useState } from 'react'
 import { type Waffle } from '../../domain/waffles'
 import { formatFriendlyTimestamp } from '../../lib/time'
 import { Badge } from '../../ui/Badge'
@@ -15,16 +16,34 @@ import { Stack } from '../../ui/Stack'
 
 type WaffleFeedSectionProps = {
   isLoading: boolean
+  onCelebrate: (waffleId: string) => Promise<void>
   onOpenComposer: () => void
   waffles: Waffle[]
 }
 
 export function WaffleFeedSection({
   isLoading,
+  onCelebrate,
   onOpenComposer,
   waffles,
 }: WaffleFeedSectionProps) {
   const shouldReduceMotion = useReducedMotion()
+  const [celebratingWaffleId, setCelebratingWaffleId] = useState<string | null>(null)
+
+  const handleCelebrate = async (waffleId: string) => {
+    setCelebratingWaffleId(waffleId)
+
+    try {
+      await onCelebrate(waffleId)
+    } finally {
+      setCelebratingWaffleId((currentId) =>
+        currentId === waffleId ? null : currentId
+      )
+    }
+  }
+
+  const formatCelebrationCount = (count: number) =>
+    `${count} ${count === 1 ? 'cheer' : 'cheers'}`
 
   return (
     <section>
@@ -104,6 +123,26 @@ export function WaffleFeedSection({
                           </h3>
                           <p className="feed-card-message">{waffle.message}</p>
                         </Stack>
+                        <div className="feed-card-footer">
+                          <button
+                            className="feed-card-celebrate-button"
+                            disabled={
+                              waffle.viewerHasCelebrated ||
+                              celebratingWaffleId === waffle.id
+                            }
+                            onClick={() => void handleCelebrate(waffle.id)}
+                            type="button"
+                          >
+                            {celebratingWaffleId === waffle.id
+                              ? 'Celebrating...'
+                              : waffle.viewerHasCelebrated
+                                ? 'Celebrated'
+                                : 'Celebrate'}
+                          </button>
+                          <p className="feed-card-celebration-count" aria-live="polite">
+                            {formatCelebrationCount(waffle.celebrationCount)}
+                          </p>
+                        </div>
                       </Panel>
                     </m.div>
                   ))}

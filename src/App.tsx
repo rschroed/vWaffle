@@ -2,6 +2,10 @@ import { useEffect, useMemo, useState } from 'react'
 import { type SendWaffleInput, type Waffle } from './domain/waffles'
 import { HomePage } from './features/home/HomePage'
 import {
+  markWaffleCelebrated,
+  syncViewerCelebrations,
+} from './lib/celebrationState'
+import {
   createDefaultWaffleRepository,
   type WaffleRepository,
 } from './lib/waffleRepository'
@@ -35,7 +39,7 @@ export default function App({ repository }: AppProps) {
       try {
         await repo.seedDemoData?.()
         const nextWaffles = await repo.listWaffles()
-        setWaffles(nextWaffles)
+        setWaffles(syncViewerCelebrations(nextWaffles))
       } catch (error) {
         const message =
           error instanceof Error
@@ -56,7 +60,7 @@ export default function App({ repository }: AppProps) {
     try {
       await repo.sendWaffle(input)
       const nextWaffles = await repo.listWaffles()
-      setWaffles(nextWaffles)
+      setWaffles(syncViewerCelebrations(nextWaffles))
     } catch (error) {
       const message =
         error instanceof Error
@@ -67,11 +71,35 @@ export default function App({ repository }: AppProps) {
     }
   }
 
+  const handleCelebrate = async (waffleId: string) => {
+    setErrorMessage(null)
+
+    try {
+      const nextWaffle = await repo.celebrateWaffle(waffleId)
+      markWaffleCelebrated(waffleId)
+      setWaffles((currentWaffles) =>
+        currentWaffles.map((waffle) =>
+          waffle.id === waffleId
+            ? { ...nextWaffle, viewerHasCelebrated: true }
+            : waffle
+        )
+      )
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : 'Unable to celebrate that waffle right now.'
+      setErrorMessage(message)
+      throw error
+    }
+  }
+
   return (
     <HomePage
       errorMessage={errorMessage}
       figmaFileUrl={DEFAULT_FIGMA_FILE_URL}
       isLoading={isLoading}
+      onCelebrate={handleCelebrate}
       onSend={handleSend}
       tagline={DEFAULT_TAGLINE}
       waffles={waffles}
