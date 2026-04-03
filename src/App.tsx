@@ -30,6 +30,7 @@ export default function App({ repository }: AppProps) {
   const [waffles, setWaffles] = useState<Waffle[]>([])
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [highlightedWaffleId, setHighlightedWaffleId] = useState<string | null>(null)
 
   useEffect(() => {
     const load = async () => {
@@ -56,11 +57,19 @@ export default function App({ repository }: AppProps) {
 
   const handleSend = async (input: SendWaffleInput) => {
     setErrorMessage(null)
+    const previousTopId = waffles[0]?.id ?? null
 
     try {
-      await repo.sendWaffle(input)
-      const nextWaffles = await repo.listWaffles()
-      setWaffles(syncViewerCelebrations(nextWaffles))
+      const nextWaffle = await repo.sendWaffle(input)
+      const nextWaffles = syncViewerCelebrations(await repo.listWaffles())
+      const nextTopId = nextWaffles[0]?.id ?? null
+
+      setWaffles(nextWaffles)
+      setHighlightedWaffleId(
+        nextTopId && nextTopId !== previousTopId && nextTopId === nextWaffle.id
+          ? nextTopId
+          : null
+      )
     } catch (error) {
       const message =
         error instanceof Error
@@ -98,6 +107,7 @@ export default function App({ repository }: AppProps) {
     <HomePage
       errorMessage={errorMessage}
       figmaFileUrl={DEFAULT_FIGMA_FILE_URL}
+      highlightedWaffleId={highlightedWaffleId}
       isLoading={isLoading}
       onCelebrate={handleCelebrate}
       onSend={handleSend}

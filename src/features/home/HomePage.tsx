@@ -11,6 +11,7 @@ const MOBILE_LAYOUT_QUERY = '(max-width: 640px)'
 type HomePageProps = {
   errorMessage: string | null
   figmaFileUrl?: string
+  highlightedWaffleId: string | null
   isLoading: boolean
   onCelebrate: (waffleId: string) => Promise<void>
   onSend: (input: SendWaffleInput) => Promise<void>
@@ -21,6 +22,7 @@ type HomePageProps = {
 export function HomePage({
   errorMessage,
   figmaFileUrl,
+  highlightedWaffleId,
   isLoading,
   onCelebrate,
   onSend,
@@ -29,6 +31,8 @@ export function HomePage({
 }: HomePageProps) {
   const [isComposerOpen, setIsComposerOpen] = useState(false)
   const isMobileLayout = useMediaQuery(MOBILE_LAYOUT_QUERY)
+  const shouldReduceMotion =
+    useMediaQuery('(prefers-reduced-motion: reduce)') ?? false
 
   const handleOpenComposer = () => {
     if (isMobileLayout) {
@@ -76,9 +80,11 @@ export function HomePage({
 
         <div className="home-feed-column">
           <WaffleFeedSection
+            highlightedWaffleId={highlightedWaffleId}
             isLoading={isLoading}
             onCelebrate={onCelebrate}
             onOpenComposer={handleOpenComposer}
+            shouldReduceMotion={shouldReduceMotion}
             waffles={waffles}
           />
         </div>

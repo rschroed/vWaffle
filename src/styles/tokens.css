@@ -54,6 +54,12 @@
   --z-overlay: 20;
   --overlay-scrim: rgb(17 6 7 / 0.18);
   --motion-fast: 160ms;
+  --motion-arcade-pop: 320ms;
+  --color-arcade-glow: rgb(255 190 11 / 0.38);
+  --color-arcade-glow-strong: rgb(255 143 33 / 0.62);
+  --color-arcade-burst: #ff8a1f;
+  --color-arcade-burst-soft: rgb(255 228 162 / 0.92);
+  --color-arcade-chip: rgb(255 245 226 / 0.94);
 }
 
 * {
