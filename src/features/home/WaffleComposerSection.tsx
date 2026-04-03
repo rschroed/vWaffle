@@ -137,7 +137,7 @@ export function WaffleComposerSection({
               <p aria-live="polite" className="feature-status">
                 {status === 'sent'
                   ? 'Waffle sent to the team feed.'
-                  : 'Recognition is shared publicly so appreciation stays visible.'}
+                  : 'Recognition stays public so teammates can notice it and add a cheer.'}
               </p>
             </div>
           </form>

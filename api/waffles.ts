@@ -2,11 +2,12 @@ import { randomUUID } from 'node:crypto'
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import type { SendWaffleInput } from '../src/domain/waffles.js'
 import {
-  ensureWafflesTable,
+  ensureWaffleTables,
+  getWaffleRowById,
   getPool,
   hasDatabaseConfig,
+  listWaffleRows,
   mapWaffleRowToDomain,
-  type WaffleRow,
 } from './_lib/wafflesDb.js'
 
 // Keep runtime validation local to the API function so the server bundle does
@@ -56,21 +57,12 @@ export default async function handler(
   }
 
   try {
-    await ensureWafflesTable()
+    await ensureWaffleTables()
     const pool = getPool()
 
     if (request.method === 'GET') {
-      const result = await pool.query<WaffleRow>(
-        `
-          SELECT id, sender_name, recipient_name, flavor, message, created_at
-          FROM waffles
-          ORDER BY created_at DESC
-          LIMIT 100
-        `
-      )
-
       return response.status(200).json({
-        waffles: result.rows.map(mapWaffleRowToDomain),
+        waffles: (await listWaffleRows()).map(mapWaffleRowToDomain),
       })
     }
 
@@ -83,7 +75,7 @@ export default async function handler(
       })
     }
 
-    const result = await pool.query<WaffleRow>(
+    const result = await pool.query<{ id: string }>(
       `
         INSERT INTO waffles (
           id,
@@ -94,7 +86,7 @@ export default async function handler(
           created_at
         )
         VALUES ($1, $2, $3, $4, $5, NOW())
-        RETURNING id, sender_name, recipient_name, flavor, message, created_at
+        RETURNING id
       `,
       [
         randomUUID(),
@@ -105,8 +97,14 @@ export default async function handler(
       ]
     )
 
+    const waffle = await getWaffleRowById(result.rows[0]?.id ?? '')
+
+    if (!waffle) {
+      throw new Error('Unable to load the created waffle right now.')
+    }
+
     return response.status(201).json({
-      waffle: mapWaffleRowToDomain(result.rows[0]),
+      waffle: mapWaffleRowToDomain(waffle),
     })
   } catch (error) {
     const message =

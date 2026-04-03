@@ -25,6 +25,8 @@ export type Waffle = {
   flavor: WaffleFlavor
   message: string
   createdAt: CreatedAt
+  celebrationCount: number
+  viewerHasCelebrated?: boolean
 }
 
 export type SendWaffleInput = {
@@ -42,6 +44,7 @@ export const SEEDED_WAFFLES: Waffle[] = [
     flavor: 'Classic Buttermilk',
     message: 'For untangling the debugger mystery before coffee.',
     createdAt: '2026-03-31T15:00:00.000Z',
+    celebrationCount: 2,
   },
   {
     id: 'waffle-002',
@@ -50,6 +53,7 @@ export const SEEDED_WAFFLES: Waffle[] = [
     flavor: 'Chocolate Confetti',
     message: 'You turned the prototype review into a tiny party.',
     createdAt: '2026-03-31T14:15:00.000Z',
+    celebrationCount: 1,
   },
   {
     id: 'waffle-003',
@@ -58,5 +62,6 @@ export const SEEDED_WAFFLES: Waffle[] = [
     flavor: 'Blueberry Blitz',
     message: 'For the Figma cleanup pass that made the round-trip sing.',
     createdAt: '2026-03-31T13:20:00.000Z',
+    celebrationCount: 0,
   },
 ]

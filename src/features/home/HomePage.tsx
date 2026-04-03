@@ -12,6 +12,7 @@ type HomePageProps = {
   errorMessage: string | null
   figmaFileUrl?: string
   isLoading: boolean
+  onCelebrate: (waffleId: string) => Promise<void>
   onSend: (input: SendWaffleInput) => Promise<void>
   tagline: string
   waffles: Waffle[]
@@ -21,6 +22,7 @@ export function HomePage({
   errorMessage,
   figmaFileUrl,
   isLoading,
+  onCelebrate,
   onSend,
   tagline,
   waffles,
@@ -75,6 +77,7 @@ export function HomePage({
         <div className="home-feed-column">
           <WaffleFeedSection
             isLoading={isLoading}
+            onCelebrate={onCelebrate}
             onOpenComposer={handleOpenComposer}
             waffles={waffles}
           />
