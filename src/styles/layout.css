@@ -125,6 +125,21 @@
   padding: var(--space-md);
 }
 
+.feed-card-artwork {
+  overflow: hidden;
+  margin-bottom: var(--space-md);
+  border-radius: calc(var(--radius-lg) - 0.25rem);
+  aspect-ratio: 4 / 3;
+  background: var(--color-surface-muted);
+}
+
+.feed-card-artwork-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .feed-state {
   color: var(--color-text-muted);
   font-size: var(--text-md);

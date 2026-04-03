@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { vi } from 'vitest'
 import App from './App'
 import { SEEDED_WAFFLES, WAFFLE_FLAVORS } from './domain/waffles'
+import { getWaffleFlavorArtwork } from './features/home/waffleFlavorArtwork'
 import { createMockWaffleRepository } from './lib/waffleRepository'
 
 const mockMatchMedia = (matches: boolean) => {
@@ -31,11 +32,25 @@ describe('App', () => {
   it('renders the seeded waffles on first load', async () => {
     render(<App repository={createMockWaffleRepository()} />)
 
-    expect(await screen.findByText(/Ryan sent a waffle to Priya/i)).toBeInTheDocument()
+    const cardTitle = await screen.findByText(/Ryan sent a waffle to Priya/i)
+
+    expect(cardTitle).toBeInTheDocument()
     expect(
       screen.getByText(SEEDED_WAFFLES[1].message)
     ).toBeInTheDocument()
     expect(screen.getByText('2 cheers')).toBeInTheDocument()
+
+    const card = cardTitle.closest('article')
+
+    expect(card).not.toBeNull()
+    expect(
+      within(card as HTMLElement).getByRole('img', {
+        name: /Classic Buttermilk waffle artwork/i,
+      })
+    ).toHaveAttribute(
+      'src',
+      getWaffleFlavorArtwork('Classic Buttermilk').src
+    )
   })
 
   it('lets the viewer celebrate a waffle once', async () => {
@@ -91,10 +106,24 @@ describe('App', () => {
     )
     await user.click(screen.getByRole('button', { name: /Send waffle/i }))
 
-    expect(await screen.findByText(/Casey sent a waffle to Sam/i)).toBeInTheDocument()
+    const cardTitle = await screen.findByText(/Casey sent a waffle to Sam/i)
+
+    expect(cardTitle).toBeInTheDocument()
     expect(
       screen.getByText(/For making the Vercel preview look effortless\./i)
     ).toBeInTheDocument()
+
+    const card = cardTitle.closest('article')
+
+    expect(card).not.toBeNull()
+    expect(
+      within(card as HTMLElement).getByRole('img', {
+        name: /Chocolate Confetti waffle artwork/i,
+      })
+    ).toHaveAttribute(
+      'src',
+      getWaffleFlavorArtwork('Chocolate Confetti').src
+    )
   })
 
   it('opens the mobile composer sheet and closes it after sending', async () => {

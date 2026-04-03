@@ -13,6 +13,7 @@ import { Button } from '../../ui/Button'
 import { Panel } from '../../ui/Panel'
 import { SectionHeader } from '../../ui/SectionHeader'
 import { Stack } from '../../ui/Stack'
+import { getWaffleFlavorArtwork } from './waffleFlavorArtwork'
 
 type WaffleFeedSectionProps = {
   isLoading: boolean
@@ -85,67 +86,80 @@ export function WaffleFeedSection({
                 </m.div>
               ) : (
                 <m.div className="feed-list" key="feed-list" layout role="list">
-                  {waffles.map((waffle, index) => (
-                    <m.div
-                      animate={{ opacity: 1, scale: 1, y: 0 }}
-                      initial={
-                        shouldReduceMotion
-                          ? false
-                          : { opacity: 0, scale: 0.985, y: 12 }
-                      }
-                      key={waffle.id}
-                      layout
-                      role="listitem"
-                      transition={
-                        shouldReduceMotion
-                          ? { duration: 0 }
-                          : {
-                              delay: Math.min(index * 0.03, 0.15),
-                              duration: 0.24,
-                              ease: [0.22, 1, 0.36, 1],
-                            }
-                      }
-                    >
-                      <Panel as="article" className="feed-card" tone="subtle">
-                        <div className="feed-card-top">
-                          <Badge>{waffle.flavor}</Badge>
-                          <time className="feed-card-time" dateTime={waffle.createdAt}>
-                            {formatFriendlyTimestamp(waffle.createdAt)}
-                          </time>
-                        </div>
-                        <Stack gap="sm">
-                          <h3 className="feed-card-title">
-                            {waffle.sender.name}
-                            {' '}
-                            sent a waffle to
-                            {' '}
-                            {waffle.recipient.name}
-                          </h3>
-                          <p className="feed-card-message">{waffle.message}</p>
-                        </Stack>
-                        <div className="feed-card-footer">
-                          <button
-                            className="feed-card-celebrate-button"
-                            disabled={
-                              waffle.viewerHasCelebrated ||
-                              celebratingWaffleId === waffle.id
-                            }
-                            onClick={() => void handleCelebrate(waffle.id)}
-                            type="button"
-                          >
-                            {celebratingWaffleId === waffle.id
-                              ? 'Celebrating...'
-                              : waffle.viewerHasCelebrated
-                                ? 'Celebrated'
-                                : 'Celebrate'}
-                          </button>
-                          <p className="feed-card-celebration-count" aria-live="polite">
-                            {formatCelebrationCount(waffle.celebrationCount)}
-                          </p>
-                        </div>
-                      </Panel>
-                    </m.div>
-                  ))}
+                  {waffles.map((waffle, index) => {
+                    const artwork = getWaffleFlavorArtwork(waffle.flavor)
+
+                    return (
+                      <m.div
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        initial={
+                          shouldReduceMotion
+                            ? false
+                            : { opacity: 0, scale: 0.985, y: 12 }
+                        }
+                        key={waffle.id}
+                        layout
+                        role="listitem"
+                        transition={
+                          shouldReduceMotion
+                            ? { duration: 0 }
+                            : {
+                                delay: Math.min(index * 0.03, 0.15),
+                                duration: 0.24,
+                                ease: [0.22, 1, 0.36, 1],
+                              }
+                        }
+                      >
+                        <Panel as="article" className="feed-card" tone="subtle">
+                          <div className="feed-card-artwork">
+                            <img
+                              alt={artwork.alt}
+                              className="feed-card-artwork-image"
+                              decoding="async"
+                              loading="lazy"
+                              src={artwork.src}
+                            />
+                          </div>
+                          <div className="feed-card-top">
+                            <Badge>{waffle.flavor}</Badge>
+                            <time className="feed-card-time" dateTime={waffle.createdAt}>
+                              {formatFriendlyTimestamp(waffle.createdAt)}
+                            </time>
+                          </div>
+                          <Stack gap="sm">
+                            <h3 className="feed-card-title">
+                              {waffle.sender.name}
+                              {' '}
+                              sent a waffle to
+                              {' '}
+                              {waffle.recipient.name}
+                            </h3>
+                            <p className="feed-card-message">{waffle.message}</p>
+                          </Stack>
+                          <div className="feed-card-footer">
+                            <button
+                              className="feed-card-celebrate-button"
+                              disabled={
+                                waffle.viewerHasCelebrated ||
+                                celebratingWaffleId === waffle.id
+                              }
+                              onClick={() => void handleCelebrate(waffle.id)}
+                              type="button"
+                            >
+                              {celebratingWaffleId === waffle.id
+                                ? 'Celebrating...'
+                                : waffle.viewerHasCelebrated
+                                  ? 'Celebrated'
+                                  : 'Celebrate'}
+                            </button>
+                            <p className="feed-card-celebration-count" aria-live="polite">
+                              {formatCelebrationCount(waffle.celebrationCount)}
+                            </p>
+                          </div>
+                        </Panel>
+                      </m.div>
+                    )
+                  })}
                 </m.div>
               )}
             </AnimatePresence>

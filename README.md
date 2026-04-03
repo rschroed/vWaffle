@@ -29,19 +29,28 @@ npm run build
 
 - Repo skill: `.codex/skills/vwaffle-demo/SKILL.md`
 - Figma workflow: use the bundled `figma` and `figma-use` skills to keep a single primary screen in sync with the app
+- Flavor artwork workflow: author flavor images in Figma, export them into `public/waffles/`, and keep frame names aligned with `WAFFLE_FLAVORS`
 - Vercel workflow: use the Vercel plugin when available; otherwise rely on `vercel.json` plus the normal Vercel project import flow
 - GitHub workflow: keep issues, labels, and the project board intentionally light so the demo stays fun
 
 Figma source:
 [vWaffle Demo screen](https://www.figma.com/design/AwFfD4RhxBCjE8OwR2htej/vWaffle-Demo?node-id=5-3)
 
+Flavor artwork source:
+- Figma file: `AwFfD4RhxBCjE8OwR2htej`
+- Figma page: `Waffles`
+- Runtime assets: `public/waffles/*.png`
+- Workflow details: `docs/flavor-artwork-workflow.md`
+
 ## Project shape
 
 - `src/domain/waffles.ts`: domain contract and seeded waffles
 - `src/lib/waffleRepository.ts`: repository interface plus mock/API-backed implementations
 - `src/features/home/*`: page sections for hero, composer, and feed
+- `src/features/home/waffleFlavorArtwork.ts`: flavor artwork mapping derived from `WaffleFlavor`
 - `src/ui/*`: reusable design-system-ready primitives
 - `docs/demo-runbook.md`: happy-path walkthrough for the lunch-and-learn
+- `docs/flavor-artwork-workflow.md`: repeatable Figma-to-app flavor art workflow
 - `docs/product-vision.md`: narrative product vision for `vvaffle`
 - `api/waffles.ts`: Vercel Function for the shared persisted feed
 
