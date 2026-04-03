@@ -23,19 +23,11 @@
 }
 
 .hero-logo {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: var(--size-hero-logo);
-  height: var(--size-hero-logo);
-  border: 1px solid var(--color-border-strong);
-  border-radius: var(--radius-lg);
-  background: var(--color-surface-muted);
-  color: var(--color-text-muted);
-  font-size: 1.5rem;
-  font-weight: 700;
-  letter-spacing: -0.04em;
-  text-transform: lowercase;
+  display: block;
+  width: min(calc(var(--size-hero-logo) * 1.4), 100%);
+  height: auto;
+  aspect-ratio: 228 / 194;
+  object-fit: cover;
 }
 
 .hero-tagline {

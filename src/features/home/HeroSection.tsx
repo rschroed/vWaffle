@@ -1,3 +1,4 @@
+import { vvaffleLogoSrc } from '../../assets/vvaffleLogo'
 import { Button } from '../../ui/Button'
 import { Panel } from '../../ui/Panel'
 import { Stack } from '../../ui/Stack'
@@ -17,9 +18,7 @@ export function HeroSection({
     <section className="hero-section">
       <Panel as="section" className="hero-panel">
         <Stack gap="lg">
-          <div className="hero-logo" aria-label="vvaffle placeholder logo">
-            vv
-          </div>
+          <img className="hero-logo" alt="vvaffle logo" src={vvaffleLogoSrc} />
 
           <p className="hero-tagline">{tagline}</p>
 

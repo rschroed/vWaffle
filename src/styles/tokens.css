@@ -6,25 +6,25 @@
     ui-monospace, SFMono-Regular, SFMono-Regular, Menlo, Monaco, Consolas,
     'Liberation Mono', 'Courier New', monospace;
 
-  --color-bg: #ffffff;
-  --color-page-background: #ffffff;
-  --color-surface: #ffffff;
-  --color-surface-muted: #f5f5f5;
-  --color-surface-raised: #fafafa;
-  --color-border: #d4d4d8;
-  --color-border-strong: #3f3f46;
-  --color-text: #09090b;
-  --color-text-muted: #52525b;
-  --color-text-subtle: #71717a;
-  --color-inverse: #fafafa;
-  --color-focus: #18181b;
-  --color-accent: #27272a;
-  --color-accent-muted: #e4e4e7;
-  --color-accent-contrast: #fafafa;
-  --color-success: #166534;
-  --color-warning: #a16207;
-  --color-danger: #b91c1c;
-  --color-scrim: rgb(0 0 0 / 0.18);
+  --color-bg: #fffbf4;
+  --color-page-background: #fffbf4;
+  --color-surface: #fffbf4;
+  --color-surface-muted: #ffe2b8;
+  --color-surface-raised: #fff0df;
+  --color-border: #f6b923;
+  --color-border-strong: #522719;
+  --color-text: #110607;
+  --color-text-muted: #6d3a26;
+  --color-text-subtle: #8a4e31;
+  --color-inverse: #fff0df;
+  --color-focus: #210c0a;
+  --color-accent: #371710;
+  --color-accent-muted: #f1c27d;
+  --color-accent-contrast: #fff0df;
+  --color-success: #5f7648;
+  --color-warning: #e0901a;
+  --color-danger: #983838;
+  --color-scrim: rgb(17 6 7 / 0.18);
 
   --radius-sm: 0.5rem;
   --radius-md: 0.75rem;
@@ -52,7 +52,7 @@
 
   --page-max-width: 72rem;
   --z-overlay: 20;
-  --overlay-scrim: rgb(0 0 0 / 0.18);
+  --overlay-scrim: rgb(17 6 7 / 0.18);
   --motion-fast: 160ms;
 }
 
